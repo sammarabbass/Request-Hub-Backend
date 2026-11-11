@@ -4,8 +4,14 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
-connectDB();
+const corsOptions = {
+  origin: process.env.FRONTEND_URL, // Replace with your frontend URL
+  credentials: true,               // Allow cookies / authorization headers if needed
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
+connectDB()
 
 app.use(express.json());
 
