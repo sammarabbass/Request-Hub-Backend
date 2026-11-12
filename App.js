@@ -2,19 +2,24 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
-const dns=require("dns")
-const app = express();
-// dns.setDefaultResultOrder("ipv4first");
+
+const dns = require("dns");
 dns.setDefaultResultOrder("ipv4first");
+
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+
+const app = express();
+
 const allowedOrigins = [
-  "https://railway.app",
+  "https://request-hub-frontend-production.up.railway.app",
   "http://localhost:5173",
-  process.env.FRONTEND_URL?.replace(/\/$/, "") // Automatically removes any trailing slash
+  process.env.FRONTEND_URL?.replace(/\/$/, "")
 ].filter(Boolean);
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl/Postman) or allowed origins
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -27,7 +32,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+app.options("*", cors(corsOptions));
 connectDB();
 
 app.use(express.json());
