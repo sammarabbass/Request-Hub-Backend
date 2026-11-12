@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "description": "Backend API for Request-Hub built with Node.js, Express, and MongoDB.",
   "main": "App.js",
   "dependencies": {
     "accepts": "^2.0.0",
@@ -149,15 +149,20 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node App.js",
+    "dev": "nodemon App.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/sammarabbass/Request-Hub-Backend"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "homepage": ""
+  "bugs": {
+    "url": "https://github.com"
+  },
+  "homepage": "https://github.com"
 }
