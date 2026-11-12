@@ -381,9 +381,8 @@ exports.resetPassword = async (req, res) => {
 
 // logout 
 // controllers/authController.js
-const User = require('../models/User'); // Apna User model import karein
 
-const logout = async (req, res) => {
+exports.logout = async (req, res) => {
   try {
     // 1. User ki ID lein (jo auth middleware se req.user mein aati hai, ya req.body se bhejein)
     const userId = req.user.id; // Agar middleware nahi hai to: const { userId } = req.body;
@@ -408,4 +407,3 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { logout };
