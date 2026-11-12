@@ -2,9 +2,6 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-const { Resend } = require("resend");
-   const resend = new Resend(process.env.RESEND_API_KEY);
 // signup
 exports.signUp = async (req, res) => {
   try {
@@ -153,11 +150,18 @@ exports.forgotPassword = async (req, res) => {
 
     const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    const { error } = await resend.emails.send({
-      from: "ServiceHub <onboarding@resend.dev>",
-      to: user.email,
-      subject: "Password Reset Request",
-      html: `
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "api-key": process.env.BREVO_API_KEY,
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        sender: { name: "ServiceHub", email: process.env.BREVO_SENDER_EMAIL },
+        to: [{ email: user.email }],
+        subject: "Password Reset Request",
+        htmlContent: `
         <div style="margin:0;padding:40px 20px;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;">
           <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:24px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 20px 50px rgba(15,23,42,0.12);">
 
@@ -193,17 +197,20 @@ exports.forgotPassword = async (req, res) => {
 
           </div>
         </div>
-      `,
+        `,
+      }),
     });
 
-    if (error) throw new Error(error.message);
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.message || "Email send failed");
+    }
 
     res.json({ message: "password reset link sent to your email" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-};
-// reset password
+};// reset password
 
 exports.resetPassword = async (req, res) => {
   try {
