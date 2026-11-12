@@ -148,13 +148,17 @@ exports.forgotPassword = async (req, res) => {
     user.resetToken = resetToken;
     user.resetTokenExpire = Date.now() + 15 * 60 * 1000;
     await user.save();
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-        });
+   const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  family: 4, // IPv4 force
+  connectionTimeout: 10000,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
         // console.log(process.env.EMAIL_USER);
         // console.log(process.env.EMAIL_PASS);
         
