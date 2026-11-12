@@ -4,14 +4,29 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 
 const app = express();
+const allowedOrigins = [
+  "https://railway.app",
+  "http://localhost:5173",
+  process.env.FRONTEND_URL?.replace(/\/$/, "") // Automatically removes any trailing slash
+].filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL, // Replace with your frontend URL
-  credentials: true,               // Allow cookies / authorization headers if needed
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl/Postman) or allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 };
+
 app.use(cors(corsOptions));
-connectDB()
+
+connectDB();
 
 app.use(express.json());
 
@@ -22,7 +37,7 @@ app.use("/api/requests", require("./routes/requestRoutes"));
 // Testing
 app.get("/", (req, res) => {
   res.json({
-    message: "Service Hub API is running!",
+    message: "Service Hub API is running ok!",
   });
 });
 
