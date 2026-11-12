@@ -2,9 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
-const dns=require("dns")
+// const dns=require("dns")
 const app = express();
-dns.setDefaultResultOrder("ipv4first");
+// dns.setDefaultResultOrder("ipv4first");
 const allowedOrigins = [
   "https://railway.app",
   "http://localhost:5173",
