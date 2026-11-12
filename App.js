@@ -11,10 +11,9 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
 app.use(cors({
   origin: [
-    "https://request-hub-frontend-production.up.railway.app",
+    "https://railway.app",
     "http://localhost:5173"
   ],
   credentials: true
