@@ -148,7 +148,8 @@ exports.forgotPassword = async (req, res) => {
     user.resetTokenExpire = Date.now() + 15 * 60 * 1000;
     await user.save();
 
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+const baseUrl = process.env.FRONTEND_URL.trim().replace(/\/+$/, "");
+const resetLink = `${baseUrl}/reset-password/${resetToken}`;
 
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
