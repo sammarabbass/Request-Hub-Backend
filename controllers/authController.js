@@ -380,3 +380,32 @@ exports.resetPassword = async (req, res) => {
 
 
 // logout 
+// controllers/authController.js
+const User = require('../models/User'); // Apna User model import karein
+
+const logout = async (req, res) => {
+  try {
+    // 1. User ki ID lein (jo auth middleware se req.user mein aati hai, ya req.body se bhejein)
+    const userId = req.user.id; // Agar middleware nahi hai to: const { userId } = req.body;
+
+    // 2. Database mein user ka refreshToken clear kar dein
+    await User.findByIdAndUpdate(userId, {
+      refreshToken: null // ya "" (empty string)
+    });
+
+    // 3. Frontend ko response bhej dein
+    return res.status(200).json({
+      success: true,
+      message: 'User logged out successfully'
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Logout failed',
+      error: error.message
+    });
+  }
+};
+
+module.exports = { logout };
