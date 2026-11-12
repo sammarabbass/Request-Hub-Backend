@@ -115,6 +115,7 @@
     "raw-body": "^3.0.2",
     "readable-stream": "^3.6.2",
     "readdirp": "^3.6.0",
+    "resend": "^6.38.0",
     "router": "^2.2.0",
     "safe-buffer": "^5.2.1",
     "safer-buffer": "^2.1.2",
@@ -147,7 +148,6 @@
     "whatwg-url": "^14.2.0",
     "wrappy": "^1.0.2"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node App.js",
     "dev": "nodemon App.js",
